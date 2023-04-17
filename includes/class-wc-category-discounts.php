@@ -46,8 +46,9 @@ class Wc_Category_Discounts
         $max_discount = 0;
 
         foreach ($categories as $category) {
-            $discount_type = get_option("wc_category_discounts_discount_type_{$category->term_id}");
-            $discount_value = get_option("wc_category_discounts_discount_value_{$category->term_id}");
+            $discount_data = self::get_discount_for_category($category);
+            $discount_type = $discount_data['type'];
+            $discount_value = $discount_data['value'];
 
             if ($discount_type && $discount_value) {
                 $discount = 0;
@@ -71,39 +72,37 @@ class Wc_Category_Discounts
         return $price;
     }
 
-    public static function wc_category_discounts_sale_price_html($price_html, $product) {
+    public static function wc_category_discounts_sale_price_html($price_html, $product)
+    {
         if ($product->is_type('simple')) {
             $regular_price = $product->get_regular_price();
-            $discounted_price = WC_Category_Discounts::apply_discount($regular_price, $product);
-    
+            $discounted_price = self::apply_discount($regular_price, $product);
+
             if ($discounted_price != $regular_price) {
                 $price_html = '<del>' . wc_price($regular_price) . '</del> <ins>' . wc_price($discounted_price) . '</ins>';
             }
         }
-    
+
         return $price_html;
     }
-    
 
-    public static function apply_discount_simple($price, $product) {
-        if ($product->is_type('simple')) {
-            return self::apply_discount($price, $product);
+    public static function get_discount_for_category($category)
+    {
+        $cache_key = "wc_category_discounts_discount_data_{$category->term_id}";
+        $discount_data = wp_cache_get($cache_key);
+
+        if (false === $discount_data) {
+            $discount_type = get_option("wc_category_discounts_discount_type_{$category->term_id}");
+            $discount_value = get_option("wc_category_discounts_discount_value_{$category->term_id}");
+            $discount_data = array(
+                'type' => $discount_type,
+                'value' => $discount_value,
+            );
+            wp_cache_set($cache_key, $discount_data);
         }
-        return $price;
-    }
-    
-    public static function apply_discount_variable($price, $product) {
-        if ($product->is_type('variation')) {
-            return self::apply_discount($price, $product);
-        }
-        return $price;
-    }
-    
 
-
+        return $discount_data;
+    }
 }
 
-// add_filter('woocommerce_product_variation_get_price', array('WC_Category_Discounts', 'apply_discount_variable'), 10, 2);
-add_filter('woocommerce_get_price_html', array('WC_Category_Discounts', 'wc_category_discounts_sale_price_html'), 10, 2);
-
-
+add_filter('woocommerce_get_price_html', array('Wc_Category_Discounts', 'wc_category_discounts_sale_price_html'), 10, 2);
