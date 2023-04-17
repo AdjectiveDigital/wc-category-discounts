@@ -61,92 +61,100 @@ class Wc_Category_Discounts_Admin
         }
 
         ?>
-        <div class="wrap">
+        <div class="wrap ">
             <h1>
                 <?php echo esc_html(get_admin_page_title()); ?>
             </h1>
 
-            <h2>
-                <?php _e('Add Category Discount', 'wc-category-discounts'); ?>
-            </h2>
-            <form id="add-category-discount-form">
-                <input type="hidden" id="edit-category-id" name="edit_category_id" value="">
-                <table class="form-table">
-                    <tbody>
+            <div class="metabox-holder">
+                <div class="postbox">
+                    <div class="postbox-header">
+                        <h2 class="hndle ui-sortable-handle">
+                            <?php _e('Add Category Discount', 'wc-category-discounts'); ?>
+                        </h2>
+                    </div>
+                    <div class="inside">
+                        <form id="add-category-discount-form">
+                            <input type="hidden" id="edit-category-id" name="edit_category_id" value="">
+                            <table class="form-table meta-box-form-table">
+                                <tbody>
+                                    <tr>
+                                        <th>
+                                            <?php _e('Category', 'wc-category-discounts'); ?>
+                                        </th>
+                                        <td>
+                                            <select id="category-id" required>
+                                                <option value="">
+                                                    <?php _e('Select a category', 'wc-category-discounts'); ?>
+                                                </option>
+                                                <?php echo $categories_options; ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <?php _e('Discount Type', 'wc-category-discounts'); ?>
+                                        </th>
+                                        <td>
+                                            <select id="discount-type" required>
+                                                <option value="">
+                                                    <?php _e('Select a discount type', 'wc-category-discounts'); ?>
+                                                </option>
+                                                <option value="percentage">
+                                                    <?php _e('Percentage', 'wc-category-discounts'); ?>
+                                                </option>
+                                                <option value="fixed">
+                                                    <?php _e('Fixed Amount', 'wc-category-discounts'); ?>
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <?php _e('Discount Value', 'wc-category-discounts'); ?>
+                                        </th>
+                                        <td>
+                                            <input type="number" id="discount-value" step="0.01" min="0" required />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="submit" class="button button-primary">
+                                <?php _e('Add Discount', 'wc-category-discounts'); ?>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <h2>
+                    <?php _e('Existing Category Discounts', 'wc-category-discounts'); ?>
+                </h2>
+                <table class="wp-list-table widefat fixed striped table-view-list" id="category-discounts-table">
+                    <thead>
                         <tr>
                             <th>
                                 <?php _e('Category', 'wc-category-discounts'); ?>
                             </th>
-                            <td>
-                                <select id="category-id" required>
-                                    <option value="">
-                                        <?php _e('Select a category', 'wc-category-discounts'); ?>
-                                    </option>
-                                    <?php echo $categories_options; ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
                             <th>
                                 <?php _e('Discount Type', 'wc-category-discounts'); ?>
                             </th>
-                            <td>
-                                <select id="discount-type" required>
-                                    <option value="">
-                                        <?php _e('Select a discount type', 'wc-category-discounts'); ?>
-                                    </option>
-                                    <option value="percentage">
-                                        <?php _e('Percentage', 'wc-category-discounts'); ?>
-                                    </option>
-                                    <option value="fixed">
-                                        <?php _e('Fixed Amount', 'wc-category-discounts'); ?>
-                                    </option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
                             <th>
                                 <?php _e('Discount Value', 'wc-category-discounts'); ?>
                             </th>
-                            <td>
-                                <input type="number" id="discount-value" step="0.01" min="0" required />
-                            </td>
+                            <th>
+                                <?php _e('Apply to Items with a Sale Price', 'wc-category-discounts'); ?>
+                            </th>
+                            <th>
+                                <?php _e('Actions', 'wc-category-discounts'); ?>
+                            </th>
                         </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- The table rows will be dynamically generated using JavaScript. -->
                     </tbody>
                 </table>
-                <button type="submit" class="button button-primary">
-                    <?php _e('Add Discount', 'wc-category-discounts'); ?>
-                </button>
-            </form>
-
-            <h2>
-                <?php _e('Existing Category Discounts', 'wc-category-discounts'); ?>
-            </h2>
-            <table class="wp-list-table widefat fixed striped table-view-list" id="category-discounts-table">
-                <thead>
-                    <tr>
-                        <th>
-                            <?php _e('Category', 'wc-category-discounts'); ?>
-                        </th>
-                        <th>
-                            <?php _e('Discount Type', 'wc-category-discounts'); ?>
-                        </th>
-                        <th>
-                            <?php _e('Discount Value', 'wc-category-discounts'); ?>
-                        </th>
-                        <th>
-                            <?php _e('Apply to Items with a Sale Price', 'wc-category-discounts'); ?>
-                        </th>
-                        <th>
-                            <?php _e('Actions', 'wc-category-discounts'); ?>
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <!-- The table rows will be dynamically generated using JavaScript. -->
-                </tbody>
-            </table>
+            </div>
         </div>
 
         <script type="text/javascript">
@@ -238,20 +246,20 @@ class Wc_Category_Discounts_Admin
 
                     var row = document.createElement('tr');
                     row.innerHTML = `
-                                <td>${category}</td>
-                                <td>
-                                    <select class="row-discount-type">
-                                        <option value="percentage" ${discountType === 'percentage' ? 'selected' : ''}>Percentage</option>
-                                        <option value="fixed" ${discountType === 'fixed' ? 'selected' : ''}>Fixed</option>
-                                    </select>
-                                </td>
-                                <td><input type="number" class="row-discount-value" value="${discountValue}" min="0" step="0.01"></td>
-                                <td><input type="checkbox" class="row-apply-to-discounted-items" ${applyToDiscountedItems ? 'checked' : ''}></td>
-                                <td>
-                                    <button class="button button-small"><?php _e('Update', 'wc-category-discounts'); ?></button>
-                                    <button class="button button-small"><?php _e('Delete', 'wc-category-discounts'); ?></button>
-                                </td>
-                            `;
+                                        <td>${category}</td>
+                                        <td>
+                                            <select class="row-discount-type">
+                                                <option value="percentage" ${discountType === 'percentage' ? 'selected' : ''}>Percentage</option>
+                                                <option value="fixed" ${discountType === 'fixed' ? 'selected' : ''}>Fixed</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" class="row-discount-value" value="${discountValue}" min="0" step="0.01"></td>
+                                        <td><input type="checkbox" class="row-apply-to-discounted-items" ${applyToDiscountedItems ? 'checked' : ''}></td>
+                                        <td>
+                                            <button class="button button-small"><?php _e('Update', 'wc-category-discounts'); ?></button>
+                                            <button class="button button-small"><?php _e('Delete', 'wc-category-discounts'); ?></button>
+                                        </td>
+                                    `;
 
                     // Add click event listeners for the Update and Delete buttons.
                     row.querySelector('button:nth-child(1)').addEventListener('click', function () {
