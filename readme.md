@@ -24,6 +24,6 @@ Discounts can be edited from the table. They can also toggled to apply to sale i
 1. Percentage or fixed discounts
 2. When applied to sale items, largest discount will be applied to a product. e.g. Product has predefined price of $100, a sale price of $180. Category discount is fixed discount of $50. The category discount will be applied because it is the larger saving.
 
-Contributing
+## Contributing
 
 Contributions are welcome! If you have a feature request or bug report, please open an issue. If you would like to contribute code, please fork the repository and submit a pull request.
